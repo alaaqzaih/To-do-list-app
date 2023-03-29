@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 function TodoForm(props) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
-      text: props.edit ? props.edit.value : "",
-      description: props.edit ? props.edit.description : "",
+      text: "",
+      description:"",
     },
   });
   const onSubmit = (data) => {

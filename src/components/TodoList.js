@@ -2,7 +2,6 @@ import React, { useState , useRef } from 'react';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 import SearchFilter from './SearchFilter'
-
 function TodoList() {
   const [message, setMessage] = useState('');
   const checkbox = useRef();
@@ -45,16 +44,38 @@ function TodoList() {
     console.log(todo);
   };
 
-  const updateTodo = (todoId, newValue) => {
+  // const updateTodo = (todoId, newValue) => {
     
+  //   if (!newValue.text || newValue.text.trim() === '') {
+  //     return;
+  //   }
+
+  //   setTodos(prev => prev.map(item => (item.id === todoId ? newValue : item)));
+  //   setFilteredtasks(prev => prev.map(item => (item.id === todoId ? newValue : item)));
+
+  // };
+  const updateTodo = (todoId, newValue) => {
     if (!newValue.text || newValue.text.trim() === '') {
       return;
     }
-
-    setTodos(prev => prev.map(item => (item.id === todoId ? newValue : item)));
-    setFilteredtasks(prev => prev.map(item => (item.id === todoId ? newValue : item)));
-
+  
+    const updatedTodos = todos.map((item) => {
+      if (item.id === todoId) {
+        return {
+          ...item,
+          text: newValue.text,
+          description: newValue.description,
+          complete: newValue.complete,
+          createdAt: Date.now(), // update the createdAt value to the current time
+        };
+      }
+      return item;
+    });
+  
+    setTodos(updatedTodos);
+    setFilteredtasks(updatedTodos);
   };
+  
 
   const removeTodo = id => {
     const removedArr = [...filteredtasks].filter(todo => todo.id !== id);
@@ -112,10 +133,7 @@ function TodoList() {
         </select>
         </div>
         <div className='counts'>Number Of Tasks: {totalTasksCount} <br></br>Completed Tasks : {completedTasksCount} <br></br>Uncompleted tasks : {notCompletedTasksCount} </div>
-    
-
       </div>
-    
       <Todo
        filteredtasks = {filteredtasks}
         todos={todos}
